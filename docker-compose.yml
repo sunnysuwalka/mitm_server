@@ -1,0 +1,24 @@
+services:
+  mongo:
+    image: mongo:8
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      PORT: 8080
+      MONGODB_URI: mongodb://mongo:27017
+      DB_NAME: traffic_agent
+      COLLECTION_NAME: events
+      DEVICE_TOKEN: ${DEVICE_TOKEN}
+      MAX_BATCH: 25
+    depends_on:
+      - mongo
+    ports:
+      - "8080:8080"
+
+volumes:
+  mongo-data:

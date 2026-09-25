@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: traffic-agent-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: DB_NAME
+        value: traffic_agent
+      - key: COLLECTION_NAME
+        value: events
+      - key: DEVICE_TOKEN
+        sync: false
+      - key: TTL_DAYS
+        value: "30"
